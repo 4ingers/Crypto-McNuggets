@@ -1,22 +1,36 @@
 from flask import Flask, request
 app = Flask(__name__)
 
-help_list = {
-  '1': 'Help for the first lab',
-  '2': 'Help for the second lab',
+def Lab1(data):
+  if not 'k' in data or not 'binary' in data:
+    return {}
+
+  k = data['k']
+  if not k.isnumeric():
+    return {}
+  k = int(k)
+
+  binary = data['binary'].replace(' ', '')
+
+  if k < 1 or k > len(binary):
+    return {}
+
+  return {
+    'result': binary[k - 1]
+  }
+
+labs = {
+  '1.1': Lab1
 }
 
-@app.route('/')
+@app.route('/') # Not working :(
 @app.route('/home')
 def home():
   return 'Chicken McNuggets stuff is available on other pages...'
 
-@app.route('/labs')
-def help():
-  return help_list
-
 @app.route('/labs/<string:id>', methods=['POST'])
 def execute(id):
-  content = request.json
-  # return {"id": id}
-  return content
+  data = request.json
+  print(id)
+  result = labs[id](data)
+  return result

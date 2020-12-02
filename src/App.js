@@ -56,7 +56,7 @@ const App = () => {
       </Tabs>
       {Labs.map((lab, i) => {
         return (
-          <TabPanel key={i} value={value} index={i}>
+          <TabPanel className={classes.content} key={i} value={value} index={i}>
             <lab.component />
           </TabPanel>
         );
@@ -85,4 +85,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 80,
     padding: '40px 0',
   },
+  content: {
+    margin: '0 auto',
+  }
 }));
