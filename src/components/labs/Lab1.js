@@ -20,7 +20,9 @@ const task = `
 
 const Lab1 = () => {
   const classes = useStyles();
+
   const [binaryInput, setBinaryInput] = useState('');
+
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
   const [input3i, setInput3i] = useState('');
@@ -32,21 +34,44 @@ const Lab1 = () => {
   const [output3, setOutput3] = useState('');
   const [output4, setOutput4] = useState('');
 
-  const onTask1Called = () => {
+  const onTask1Called = () => onTaskCalled('1.1', setOutput1);
+  const onTask2Called = () => onTaskCalled('1.2', setOutput2);
+  const onTask3Called = () => onTaskCalled('1.3', setOutput3);
+  const onTask4Called = () => onTaskCalled('1.4', setOutput4);
+
+  const onTaskCalled = (id, outputSetter) => {
     padBinaryInput();
+
+    const getDataParams = () => {
+      switch (id) {
+        case '1.1':
+          return { k: input1 };
+        case '1.2':
+          return { k: input2 };
+        case '1.3':
+          return { i: input3i, j: input3j };
+        case '1.4':
+          return { m: input4 };
+        default:
+          return { shitted: 'pants' };
+      }
+    };
 
     const data = {
       binary: binaryInput,
-      k: input1,
+      ...getDataParams(),
     };
 
-    axios.post('/labs/1.1', data).then((res) => {
-      const { result } = res.data;
-      setOutput1(result || '');
-    }).catch(err => {
-      console.error(err);
-      setOutput1('');
-    });
+    axios
+      .post('/labs/' + id, data)
+      .then((res) => {
+        const { result } = res.data;
+        outputSetter(result || '');
+      })
+      .catch((err) => {
+        console.error(err);
+        outputSetter('');
+      });
   };
 
   const padBinaryInput = () => setBinaryInput(binaryInput.padEnd(32, '0'));
@@ -106,6 +131,7 @@ const Lab1 = () => {
             variant='contained'
             color='primary'
             className={classes.flexItem}
+            onClick={onTask2Called}
           >
             {'-->'}
           </Button>
@@ -116,7 +142,9 @@ const Lab1 = () => {
               classes.binaryOutput,
               classes.flexItem
             )}
-            length={1}
+            length={32}
+            value={output2}
+            onAccept={setOutput2}
           />
         </Box>
 
@@ -140,6 +168,7 @@ const Lab1 = () => {
             variant='contained'
             color='primary'
             className={classes.flexItem}
+            onClick={onTask3Called}
           >
             {'-->'}
           </Button>
@@ -150,7 +179,9 @@ const Lab1 = () => {
               classes.binaryOutput,
               classes.flexItem
             )}
-            length={1}
+            length={32}
+            value={output3}
+            onAccept={setOutput3}
           />
         </Box>
 
@@ -167,6 +198,7 @@ const Lab1 = () => {
             variant='contained'
             color='primary'
             className={classes.flexItem}
+            onClick={onTask4Called}
           >
             {'-->'}
           </Button>
@@ -177,7 +209,9 @@ const Lab1 = () => {
               classes.binaryOutput,
               classes.flexItem
             )}
-            length={1}
+            length={32}
+            value={output4}
+            onAccept={setOutput4}
           />
         </Box>
       </Box>
