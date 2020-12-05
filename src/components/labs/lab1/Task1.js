@@ -1,64 +1,64 @@
 import React, { useState } from 'react';
-import Markdown from 'markdown-to-jsx';
+import Markdown from '../../Markdown';
 import cn from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, TextField, Button, Typography } from '@material-ui/core';
 import axios from 'axios';
 
-import BinaryMask from '../masks/BinaryMask';
+import BinaryMask from '../../masks/BinaryMask';
 
-const task = `
+const subtask = `
 # Задание 1
     
-С клавиатуры вводится 32-х разрядное целое число a в двоичной системе счисления.
+С клавиатуры вводится **32**-х разрядное целое число *a* в двоичной системе счисления.
    
-1. Вывести k−ый бит числа a. Номер бита предварительно запросить у пользователя. 
-2. Установить/снять k −ый бит числа a.
-3. Поменять местами i −ый и j −ый биты в числе a. Числа i и j предварительно запросить у пользователя.
-4. Обнулить младшие m бит.
+1. Вывести *k*−ый бит числа *a*. Номер бита предварительно запросить у пользователя. 
+2. Установить/снять *k*−ый бит числа a.
+3. Поменять местами *i*−ый и *j*−ый биты в числе *a*. Числа *i* и *j* предварительно запросить у пользователя.
+4. Обнулить младшие *m* бит.
 `;
 
-const Lab1 = () => {
+const Task1 = () => {
   const classes = useStyles();
 
-  const [binaryInput, setBinaryInput] = useState('');
+  const [binary, setBinaryInput] = useState('');
 
-  const [input1, setInput1] = useState('');
-  const [input2, setInput2] = useState('');
-  const [input3i, setInput3i] = useState('');
-  const [input3j, setInput3j] = useState('');
-  const [input4, setInput4] = useState('');
+  const [param1, setParam1] = useState('');
+  const [param2, setParam2] = useState('');
+  const [param3i, setParam3i] = useState('');
+  const [param3j, setParam3j] = useState('');
+  const [param4, setParam4] = useState('');
 
   const [output1, setOutput1] = useState('');
   const [output2, setOutput2] = useState('');
   const [output3, setOutput3] = useState('');
   const [output4, setOutput4] = useState('');
 
-  const onTask1Called = () => onTaskCalled('1.1', setOutput1);
-  const onTask2Called = () => onTaskCalled('1.2', setOutput2);
-  const onTask3Called = () => onTaskCalled('1.3', setOutput3);
-  const onTask4Called = () => onTaskCalled('1.4', setOutput4);
+  const onSubtask1Called = () => onSubtaskCalled('1.1', setOutput1);
+  const onSubtask2Called = () => onSubtaskCalled('1.2', setOutput2);
+  const onSubtask3Called = () => onSubtaskCalled('1.3', setOutput3);
+  const onSubtask4Called = () => onSubtaskCalled('1.4', setOutput4);
 
-  const onTaskCalled = (id, outputSetter) => {
+  const onSubtaskCalled = (id, outputSetter) => {
     padBinaryInput();
 
     const getDataParams = () => {
       switch (id) {
         case '1.1':
-          return { k: input1 };
+          return { k: param1 };
         case '1.2':
-          return { k: input2 };
+          return { k: param2 };
         case '1.3':
-          return { i: input3i, j: input3j };
+          return { i: param3i, j: param3j };
         case '1.4':
-          return { m: input4 };
+          return { m: param4 };
         default:
           return { shitted: 'pants' };
       }
     };
 
     const data = {
-      binary: binaryInput,
+      binary: binary,
       ...getDataParams(),
     };
 
@@ -66,6 +66,7 @@ const Lab1 = () => {
       .post('/labs/' + id, data)
       .then((res) => {
         const { result } = res.data;
+        console.log(res.data);
         outputSetter(result || '');
       })
       .catch((err) => {
@@ -74,17 +75,17 @@ const Lab1 = () => {
       });
   };
 
-  const padBinaryInput = () => setBinaryInput(binaryInput.padEnd(32, '0'));
+  const padBinaryInput = () => setBinaryInput(binary.padEnd(32, '0'));
 
   return (
     <Box display='flex' flexDirection='column'>
-      <Markdown className={classes.task}>{task}</Markdown>
+      <Markdown className={classes.subtask}>{subtask}</Markdown>
 
       <Box display='flex' flexDirection='column' pb={6}>
         <BinaryMask
           className={cn(classes.binary32, classes.binaryInput)}
           length={32}
-          value={binaryInput}
+          value={binary}
           onAccept={setBinaryInput}
         />
 
@@ -93,20 +94,20 @@ const Lab1 = () => {
           <TextField
             className={cn(classes.chooseBit, classes.flexItem)}
             placeholder='k-й бит'
-            value={input1}
-            onChange={(e) => setInput1(e.target.value)}
+            value={param1}
+            onChange={(e) => setParam1(e.target.value)}
             variant='filled'
           />
           <Button
             variant='contained'
             color='primary'
             className={classes.flexItem}
-            onClick={onTask1Called}
+            onClick={onSubtask1Called}
           >
             {'-->'}
           </Button>
           <BinaryMask
-            out={true}
+            out="true"
             className={cn(
               classes.binary1,
               classes.binaryOutput,
@@ -123,20 +124,20 @@ const Lab1 = () => {
           <TextField
             className={cn(classes.chooseBit, classes.flexItem)}
             placeholder='k-й бит'
-            value={input2}
-            onChange={(e) => setInput2(e.target.value)}
+            value={param2}
+            onChange={(e) => setParam2(e.target.value)}
             variant='filled'
           />
           <Button
             variant='contained'
             color='primary'
             className={classes.flexItem}
-            onClick={onTask2Called}
+            onClick={onSubtask2Called}
           >
             {'-->'}
           </Button>
           <BinaryMask
-            out={true}
+            out="true"
             className={cn(
               classes.binary32,
               classes.binaryOutput,
@@ -153,27 +154,27 @@ const Lab1 = () => {
           <TextField
             className={cn(classes.chooseBit, classes.flexItem)}
             placeholder='i-й бит'
-            value={input3i}
-            onChange={(e) => setInput3i(e.target.value)}
+            value={param3i}
+            onChange={(e) => setParam3i(e.target.value)}
             variant='filled'
           />
           <TextField
             className={cn(classes.chooseBit, classes.flexItem)}
             placeholder='j-й бит'
-            value={input3j}
-            onChange={(e) => setInput3j(e.target.value)}
+            value={param3j}
+            onChange={(e) => setParam3j(e.target.value)}
             variant='filled'
           />
           <Button
             variant='contained'
             color='primary'
             className={classes.flexItem}
-            onClick={onTask3Called}
+            onClick={onSubtask3Called}
           >
             {'-->'}
           </Button>
           <BinaryMask
-            out={true}
+            out="true"
             className={cn(
               classes.binary32,
               classes.binaryOutput,
@@ -190,20 +191,20 @@ const Lab1 = () => {
           <TextField
             className={cn(classes.chooseBit, classes.flexItem)}
             placeholder='m бит'
-            value={input4}
-            onChange={(e) => setInput4(e.target.value)}
+            value={param4}
+            onChange={(e) => setParam4(e.target.value)}
             variant='filled'
           />
           <Button
             variant='contained'
             color='primary'
             className={classes.flexItem}
-            onClick={onTask4Called}
+            onClick={onSubtask4Called}
           >
             {'-->'}
           </Button>
           <BinaryMask
-            out={true}
+            out="true"
             className={cn(
               classes.binary32,
               classes.binaryOutput,
@@ -219,11 +220,12 @@ const Lab1 = () => {
   );
 };
 
-export default Lab1;
+export default Task1;
 
 const useStyles = makeStyles((theme) => ({
-  task: {
-    marginBottom: theme.spacing(3),
+  subtask: {
+    ...theme.typography.body2,
+    padding: theme.spacing(3, 0),
   },
   flexItem: {
     marginRight: theme.spacing(1),
@@ -249,5 +251,6 @@ const useStyles = makeStyles((theme) => ({
   },
   implementation: {
     marginBottom: theme.spacing(3),
+    alignItems: 'center',
   },
 }));

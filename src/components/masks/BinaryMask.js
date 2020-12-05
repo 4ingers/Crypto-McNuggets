@@ -12,7 +12,7 @@ const BinaryMask = (props) => {
 
   const readonly = {
     InputProps: {
-      readOnly: props.out,
+      readOnly: props.out === 'true',
     }
   }
 
@@ -20,7 +20,8 @@ const BinaryMask = (props) => {
     placeholder,
     mask,
     definitions: { b: /[01]/ },
-    variant: 'filled',
+    // variant: 'filled',
+    fullWidth: true,
     ...readonly,
   };
 

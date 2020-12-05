@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import Labs from './components/labs/';
+import Lab from './components/labs/lab1';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -19,7 +18,7 @@ const TabPanel = (props) => {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -34,7 +33,7 @@ TabPanel.propTypes = {
 
 const App = () => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(3);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -50,14 +49,14 @@ const App = () => {
         value={value}
         onChange={handleChange}
       >
-        {Labs.map((lab, i) => {
-          return <Tab className={classes.tab} key={i} label={lab.label} />;
+        {Lab.map((task, i) => {
+          return <Tab className={classes.tab} key={i} label={task.label} />;
         })}
       </Tabs>
-      {Labs.map((lab, i) => {
+      {Lab.map((task, i) => {
         return (
           <TabPanel className={classes.content} key={i} value={value} index={i}>
-            <lab.component />
+            <task.component />
           </TabPanel>
         );
       })}
@@ -75,17 +74,26 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
   },
   tabs: {
+    position: 'fixed',
     height: '100%',
+    minWidth: 80,
     alignSelf: 'center',
     boxSizing: 'border-box',
     padding: '200px 0',
-    border: `1px solid ${theme.palette.divider}`,
+    borderRight: `1px solid ${theme.palette.divider}`,
+    backdropFilter: 'blur(3px)',
+    backgroundColor: 'rgb(255, 255, 255, .3)',
+    zIndex: 10000,
   },
   tab: {
     minWidth: 80,
     padding: '40px 0',
   },
   content: {
+    minWidth: "600px",
+    maxWidth: "900px",
     margin: '0 auto',
-  }
+    position: 'relative',
+    paddingLeft: '80px',
+  },
 }));
