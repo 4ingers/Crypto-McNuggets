@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Markdown from '../../Markdown';
+import Markdown from '../../MarkdownMath';
 import cn from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, TextField, Button, Typography } from '@material-ui/core';
@@ -7,15 +7,15 @@ import axios from 'axios';
 
 import BinaryMask from '../../masks/BinaryMask';
 
-const subtask = `
+const task = `
 # Задание 1
     
-С клавиатуры вводится **32**-х разрядное целое число *a* в двоичной системе счисления.
+С клавиатуры вводится $32$-х разрядное целое число $a$ в двоичной системе счисления.
    
-1. Вывести *k*−ый бит числа *a*. Номер бита предварительно запросить у пользователя. 
-2. Установить/снять *k*−ый бит числа a.
-3. Поменять местами *i*−ый и *j*−ый биты в числе *a*. Числа *i* и *j* предварительно запросить у пользователя.
-4. Обнулить младшие *m* бит.
+1. Вывести $k$−ый бит числа $a$. Номер бита предварительно запросить у пользователя. 
+2. Установить/снять $k$−ый бит числа $a$.
+3. Поменять местами $i$−ый и $j$−ый биты в числе $a$. Числа $i$ и $j$ предварительно запросить у пользователя.
+4. Обнулить младшие $m$ бит.
 `;
 
 const Task1 = () => {
@@ -79,7 +79,7 @@ const Task1 = () => {
 
   return (
     <Box display='flex' flexDirection='column'>
-      <Markdown className={classes.subtask}>{subtask}</Markdown>
+      <Markdown className={classes.task} source={task} />
 
       <Box display='flex' flexDirection='column' pb={6}>
         <BinaryMask
@@ -223,9 +223,8 @@ const Task1 = () => {
 export default Task1;
 
 const useStyles = makeStyles((theme) => ({
-  subtask: {
-    ...theme.typography.body2,
-    padding: theme.spacing(3, 0),
+  task: {
+    ...theme.typography.body1,
   },
   flexItem: {
     marginRight: theme.spacing(1),

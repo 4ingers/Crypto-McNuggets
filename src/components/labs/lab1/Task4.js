@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Markdown from '../../Markdown';
+import Markdown from '../../MarkdownMath';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button } from '@material-ui/core';
 import axios from 'axios';
@@ -9,7 +9,9 @@ import BinaryMask from '../../masks/BinaryMask';
 const task = `
 # Задание 4
     
-Найти максимальную степень **2**, на которую делится данное целое число. *Примечание.* Операторами цикла пользоваться нельзя.
+Найти максимальную степень $2$, на которую делится данное целое число. 
+
+*Примечание.* Операторами цикла пользоваться нельзя.
 `;
 
 const Task4 = () => {
@@ -46,7 +48,7 @@ const Task4 = () => {
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <Box mb={3}>
-        <Markdown className={classes.task}>{task}</Markdown>
+        <Markdown className={classes.task} source={task} />
       </Box>
 
       <Box width={LEN * 10} maxWidth='100%' mb={3}>
@@ -63,12 +65,7 @@ const Task4 = () => {
           Погнале
         </Button>
       </Box>
-      <BinaryMask
-        out='true'
-        length={LEN}
-        value={output}
-        onAccept={setOutput}
-      />
+      <BinaryMask out='true' length={LEN} value={output} onAccept={setOutput} />
     </Box>
   );
 };
@@ -77,7 +74,7 @@ export default Task4;
 
 const useStyles = makeStyles((theme) => ({
   task: {
-    ...theme.typography.body2,
+    ...theme.typography.body1,
   },
   binaryInput: {
     caretColor: 'gray',

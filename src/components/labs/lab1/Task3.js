@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Markdown from '../../Markdown';
+import Markdown from '../../MarkdownMath';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, TextField, Button } from '@material-ui/core';
 import axios from 'axios';
@@ -9,7 +9,7 @@ import BinaryMask from '../../masks/BinaryMask';
 const task = `
 # Задание 3
     
-Поменять местами байты в заданном **32**-х разрядном целом числе. Перестановка задается пользователем.
+Поменять местами байты в заданном $32$-х разрядном целом числе. Перестановка задается пользователем.
 `;
 
 const Task3 = () => {
@@ -51,7 +51,7 @@ const Task3 = () => {
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <Box mb={3}>
-        <Markdown className={classes.task}>{task}</Markdown>
+        <Markdown className={classes.task} source={task} />
       </Box>
 
       <Box width={LEN * 10} maxWidth='100%' mb={3}>
@@ -82,12 +82,7 @@ const Task3 = () => {
           Погнале
         </Button>
       </Box>
-      <BinaryMask
-        out='true'
-        length={LEN}
-        value={output}
-        onAccept={setOutput}
-      />
+      <BinaryMask out='true' length={LEN} value={output} onAccept={setOutput} />
     </Box>
   );
 };
@@ -96,7 +91,7 @@ export default Task3;
 
 const useStyles = makeStyles((theme) => ({
   task: {
-    ...theme.typography.body2,
+    ...theme.typography.body1,
   },
   binaryInput: {
     caretColor: 'gray',

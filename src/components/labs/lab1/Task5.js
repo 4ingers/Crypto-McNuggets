@@ -1,35 +1,31 @@
 import React, { useState } from 'react';
-import Markdown from '../../Markdown';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button } from '@material-ui/core';
 import axios from 'axios';
 
+import Markdown from '../../MarkdownMath';
 import BinaryMask from '../../masks/BinaryMask';
 
 const task = `
 # Задание 5
-    
-Пусть *x* -- целое число. Найти такое *p*, что $2_2! \\geq$ ≤ 2!"# .
+
+Пусть $x$ – целое число. Найти такое $p$, что $2^p \\leqslant x \\leqslant 2^{p+1}$ .
 `;
 
 const Task5 = () => {
   const LEN = 32;
-
   const classes = useStyles();
 
   const [binaryInput, setBinaryInput] = useState('');
-
   const [output, setOutput] = useState('');
 
   const onTaskCalled = () => {
     padBinaryInput(LEN);
 
-    const data = {
-      binary: binaryInput,
-    };
+    const data = { binary: binaryInput };
 
     axios
-      .post('/labs/4', data)
+      .post('/labs/5', data)
       .then((res) => {
         const { result } = res.data;
         setOutput(result || '');
@@ -46,7 +42,7 @@ const Task5 = () => {
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <Box mb={3}>
-        <Markdown className={classes.task} source={task}></Markdown>
+        <Markdown className={classes.task} source={task}>{task}</Markdown>
       </Box>
 
       <Box width={LEN * 10} maxWidth='100%' mb={3}>
@@ -63,12 +59,7 @@ const Task5 = () => {
           Погнале
         </Button>
       </Box>
-      <BinaryMask
-        out='true'
-        length={LEN}
-        value={output}
-        onAccept={setOutput}
-      />
+      <BinaryMask out='true' length={LEN} value={output} onAccept={setOutput} />
     </Box>
   );
 };
@@ -77,7 +68,7 @@ export default Task5;
 
 const useStyles = makeStyles((theme) => ({
   task: {
-    ...theme.typography.body2,
+    ...theme.typography.body1,
   },
   binaryInput: {
     caretColor: 'gray',

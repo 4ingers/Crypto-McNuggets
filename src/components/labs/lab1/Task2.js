@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Markdown from '../../Markdown';
+import Markdown from '../../MarkdownMath';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, TextField, Button, Typography } from '@material-ui/core';
 import axios from 'axios';
@@ -9,11 +9,13 @@ import BinaryMask from '../../masks/BinaryMask';
 const task = `
 # Задание 2
     
-1. "Склеить" первые *i* битов с последними *i* битами из целого числа длиной *len* битов. 
-*Пример.* Пусть есть **12**-ти разрядное целое число, представленное в двоичной системе счисления *100011101101*. "Склеим" первые 3 и последние 3 бита, получим *100101*.
+1. "Склеить" первые $i$ битов с последними $i$ битами из целого числа длиной $len$ битов. 
+  
+   *Пример.* Пусть есть $12$-ти разрядное целое число, представленное в двоичной системе счисления \`100011101101\`. "Склеим" первые $3$ и последние $3$ бита, получим \`100101\`.
 
-2. Получить биты из целого числа длиной *len* битов, находящиеся между первыми *i* битами и последними *i* битами. 
-*Пример.* Пусть есть 12-ти разрядное целое число, представленное в двоичной системе счисления *100011101101*. Получим биты находящиеся между первыми 3 и последними 3 битами: *011101*.
+2. Получить биты из целого числа длиной $len$ битов, находящиеся между первыми $i$ битами и последними $i$ битами. 
+
+   *Пример.* Пусть есть $12$-ти разрядное целое число, представленное в двоичной системе счисления – \`100011101101\`. Получим биты находящиеся между первыми $3$ и последними $3$ битами: \`011101\`.
 `;
 
 const Task2 = () => {
@@ -68,7 +70,7 @@ const Task2 = () => {
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <Box mb={3}>
-        <Markdown className={classes.task}>{task}</Markdown>
+        <Markdown className={classes.task} source={task} />
       </Box>
 
       <Box display='flex' alignItems='center' mb={2}>
@@ -128,7 +130,7 @@ export default Task2;
 
 const useStyles = makeStyles((theme) => ({
   task: {
-    ...theme.typography.body2,
+    ...theme.typography.body1,
   },
   binaryInput: {
     caretColor: 'gray',
