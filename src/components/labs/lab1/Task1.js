@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, TextField, Button, Typography } from '@material-ui/core';
 import axios from 'axios';
 
-import BinaryMask from '../../masks/BinaryMask';
+import BinMask from '../../masks/BinMask';
 
 const task = `
 # Задание 1
@@ -79,11 +79,11 @@ const Task1 = () => {
 
   return (
     <Box display='flex' flexDirection='column'>
-      <Markdown className={classes.task} source={task} />
+      <Markdown className={classes.markdown}>{task}</Markdown>
 
       <Box display='flex' flexDirection='column' pb={6}>
-        <BinaryMask
-          className={cn(classes.binary32, classes.binaryInput)}
+        <BinMask
+          className={cn(classes.binary32, classes.inputBin)}
           length={32}
           value={binary}
           onAccept={setBinaryInput}
@@ -106,7 +106,7 @@ const Task1 = () => {
           >
             {'-->'}
           </Button>
-          <BinaryMask
+          <BinMask
             out="true"
             className={cn(
               classes.binary1,
@@ -136,7 +136,7 @@ const Task1 = () => {
           >
             {'-->'}
           </Button>
-          <BinaryMask
+          <BinMask
             out="true"
             className={cn(
               classes.binary32,
@@ -173,7 +173,7 @@ const Task1 = () => {
           >
             {'-->'}
           </Button>
-          <BinaryMask
+          <BinMask
             out="true"
             className={cn(
               classes.binary32,
@@ -203,7 +203,7 @@ const Task1 = () => {
           >
             {'-->'}
           </Button>
-          <BinaryMask
+          <BinMask
             out="true"
             className={cn(
               classes.binary32,
@@ -223,7 +223,7 @@ const Task1 = () => {
 export default Task1;
 
 const useStyles = makeStyles((theme) => ({
-  task: {
+  markdown: {
     ...theme.typography.body1,
   },
   flexItem: {
@@ -236,7 +236,7 @@ const useStyles = makeStyles((theme) => ({
   binary1: {
     width: '110px',
   },
-  binaryInput: {
+  inputBin: {
     alignSelf: 'center',
     caretColor: 'gray',
     marginBottom: theme.spacing(3),

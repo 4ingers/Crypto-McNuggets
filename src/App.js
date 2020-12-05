@@ -7,6 +7,8 @@ import Box from '@material-ui/core/Box';
 
 import Lab from './components/labs/lab1';
 
+const CURRENT_INDEX = 5;
+
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
   return (
@@ -33,7 +35,7 @@ TabPanel.propTypes = {
 
 const App = () => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(3);
+  const [value, setValue] = React.useState(CURRENT_INDEX);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

@@ -4,7 +4,8 @@ import { Box, Button } from '@material-ui/core';
 import axios from 'axios';
 
 import Markdown from '../../MarkdownMath';
-import BinaryMask from '../../masks/BinaryMask';
+import { BinMask, IntMask } from '../../masks/';
+import { Conversion } from '../../../misc/';
 
 const task = `
 # Задание 5
@@ -16,50 +17,90 @@ const Task5 = () => {
   const LEN = 32;
   const classes = useStyles();
 
-  const [binaryInput, setBinaryInput] = useState('');
-  const [output, setOutput] = useState('');
+  const [inputBin, setInputBin] = useState('');
+  const [inputInt, setInputInt] = useState('');
+
+  const [output, setOutput] = useState('Тут будет ответ...');
+
+  const binChanged = (bin) => {
+    const int = Conversion.binToInt(bin);
+    setInputBin(bin);
+    setInputInt(int);
+  };
+
+  const intChanged = (int) => {
+    const bin = Conversion.intToBin(int);
+    setInputInt(int);
+    setInputBin(bin);
+  };
+
+  const setResult = (power) => {
+    const parsed = parseInt(power, 10);
+    if (!isNaN(parsed)) {
+      setOutput(`
+$$
+p = ${parsed}
+$$
+$$
+2^{${parsed}} \\leqslant ${inputInt} \\leqslant 2^{${parsed + 1}}
+$$
+$$
+${2 ** parsed} \\leqslant ${inputInt} \\leqslant ${2 ** (parsed + 1)}
+$$
+      `)
+    } else {
+      setOutput('Обосрамс..')
+    }
+  };
 
   const onTaskCalled = () => {
     padBinaryInput(LEN);
 
-    const data = { binary: binaryInput };
+    const data = { binary: inputBin };
 
     axios
       .post('/labs/5', data)
       .then((res) => {
         const { result } = res.data;
-        setOutput(result || '');
+        setResult(result);
       })
       .catch((err) => {
         console.error(err);
-        setOutput('');
+        setOutput('Обосрамс..')
       });
   };
 
   const padBinaryInput = (length) =>
-    setBinaryInput(binaryInput.padEnd(length, '0'));
+    setInputBin(inputBin.padEnd(length, '0'));
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <Box mb={3}>
-        <Markdown className={classes.task} source={task}>{task}</Markdown>
+        <Markdown className={classes.markdown}>{task}</Markdown>
       </Box>
 
-      <Box width={LEN * 10} maxWidth='100%' mb={3}>
-        <BinaryMask
-          className={classes.binaryInput}
+      <Box width={1 + LEN * 10} maxWidth='100%' mb={3}>
+        <BinMask
+          className={classes.input}
           length={LEN}
-          value={binaryInput}
-          onAccept={setBinaryInput}
+          value={inputBin}
+          onAccept={binChanged}
         />
       </Box>
+
+      <IntMask
+        className={classes.input}
+        value={inputInt}
+        onAccept={intChanged}
+      />
 
       <Box mb={3} display='flex'>
         <Button variant='contained' onClick={onTaskCalled}>
           Погнале
         </Button>
       </Box>
-      <BinaryMask out='true' length={LEN} value={output} onAccept={setOutput} />
+
+      <Markdown className={classes.markdown}>{output}</Markdown>
     </Box>
   );
 };
@@ -67,10 +108,10 @@ const Task5 = () => {
 export default Task5;
 
 const useStyles = makeStyles((theme) => ({
-  task: {
+  markdown: {
     ...theme.typography.body1,
   },
-  binaryInput: {
+  input: {
     caretColor: 'gray',
   },
 }));

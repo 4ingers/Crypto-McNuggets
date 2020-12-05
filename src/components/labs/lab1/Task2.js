@@ -4,8 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, TextField, Button, Typography } from '@material-ui/core';
 import axios from 'axios';
 
-import BinaryMask from '../../masks/BinaryMask';
+import { IntMask, BinMask } from '../../masks/';
 
+const BIN_SIZE = 32;
 const task = `
 # Задание 2
     
@@ -19,41 +20,38 @@ const task = `
 `;
 
 const Task2 = () => {
-  const DEF_LEN = 32;
-
   const classes = useStyles();
 
-  const [paramLen, setParamLen] = useState(DEF_LEN.toString());
-  const [inputBinaryLen, setInputBinaryLen] = useState(DEF_LEN);
+  const [inputBin, setInputBin] = useState('');
 
-  const [binaryInput, setBinaryInput] = useState('');
+  const [binSize, setBinSize] = useState(BIN_SIZE);
+  const [inputBinSize, setInputBinSize] = useState(BIN_SIZE.toString());
 
-  const [paramI, setParamI] = useState('');
+  const [inputI, setInputI] = useState('');
 
   const [outputInner, setOutputInner] = useState('');
   const [outputOuter, setOutputOuter] = useState('');
 
   const convertLength = () => {
-    const converted = Number(paramLen);
-    console.log(converted);
-    if (isNaN(converted) || converted < 1 || converted > 64) return false;
-    setInputBinaryLen(converted);
+    const converted = Number(inputBinSize);
+    if (isNaN(converted) || converted < 1 || converted > 64) 
+      setInputBinSize('');
+    setBinSize(converted);
   };
 
   const onTaskCalled = () => {
-    padBinaryInput(inputBinaryLen);
+    padBinaryInput(binSize);
 
     const data = {
-      binary: binaryInput,
-      len: paramLen,
-      i: paramI,
+      binary: inputBin,
+      len: inputBinSize,
+      i: inputI,
     };
 
     axios
       .post('/labs/2', data)
       .then((res) => {
         const { result } = res.data;
-        console.log(res.data);
         setOutputInner(result.inner || '');
         setOutputOuter(result.outer || '');
       })
@@ -65,12 +63,12 @@ const Task2 = () => {
   };
 
   const padBinaryInput = (length) =>
-    setBinaryInput(binaryInput.padEnd(length, '0'));
+    setInputBin(inputBin.padEnd(length, '0'));
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <Box mb={3}>
-        <Markdown className={classes.task} source={task} />
+        <Markdown className={classes.markdown}>{task}</Markdown>
       </Box>
 
       <Box display='flex' alignItems='center' mb={2}>
@@ -78,10 +76,13 @@ const Task2 = () => {
           <Typography>Разрядность числа:</Typography>
         </Box>
         <Box mr={1} width={40}>
-          <TextField
-            placeholder={paramLen}
-            value={paramLen}
-            onChange={(e) => setParamLen(e.target.value)}
+          <IntMask
+            className={classes.input}
+            placeholder={BIN_SIZE}
+            min={1}
+            max={64}
+            value={inputBinSize}
+            onAccept={setInputBinSize}
           />
         </Box>
         <Button variant='contained' onClick={convertLength}>
@@ -89,34 +90,37 @@ const Task2 = () => {
         </Button>
       </Box>
 
-      <Box width={inputBinaryLen * 10} maxWidth='100%' mb={3}>
-        <BinaryMask
-          className={classes.binaryInput}
-          length={inputBinaryLen}
-          value={binaryInput}
-          onAccept={setBinaryInput}
+      <Box width={binSize * 10} maxWidth='100%' mb={3}>
+        <BinMask
+          className={classes.inputBin}
+          length={binSize}
+          value={inputBin}
+          onAccept={setInputBin}
         />
       </Box>
 
       <Box mb={3} display='flex'>
         <Box mr={2} width={30}>
-          <TextField
-            placeholder='i'
-            value={paramI}
-            onChange={(e) => setParamI(e.target.value)}
+          <IntMask
+            className={classes.input}
+            placeholder={'i'}
+            min={1}
+            max={64}
+            value={inputI}
+            onAccept={setInputI}
           />
         </Box>
         <Button variant='contained' onClick={onTaskCalled}>
           Погнале
         </Button>
       </Box>
-      <BinaryMask
+      <BinMask
         out='true'
         length={outputOuter.length + 1}
         value={outputOuter}
         onAccept={setOutputOuter}
       />
-      <BinaryMask
+      <BinMask
         out='true'
         length={outputInner.length + 1}
         value={outputInner}
@@ -129,10 +133,10 @@ const Task2 = () => {
 export default Task2;
 
 const useStyles = makeStyles((theme) => ({
-  task: {
+  markdown: {
     ...theme.typography.body1,
   },
-  binaryInput: {
+  inputBin: {
     caretColor: 'gray',
   },
 }));

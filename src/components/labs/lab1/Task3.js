@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, TextField, Button } from '@material-ui/core';
 import axios from 'axios';
 
-import BinaryMask from '../../masks/BinaryMask';
+import BinMask from '../../masks/BinMask';
 
 const task = `
 # Задание 3
@@ -17,7 +17,7 @@ const Task3 = () => {
 
   const classes = useStyles();
 
-  const [binaryInput, setBinaryInput] = useState('');
+  const [inputBin, setBinaryInput] = useState('');
 
   const [paramI, setParamI] = useState('');
   const [paramJ, setParamJ] = useState('');
@@ -28,7 +28,7 @@ const Task3 = () => {
     padBinaryInput(LEN);
 
     const data = {
-      binary: binaryInput,
+      binary: inputBin,
       i: paramI,
       j: paramJ,
     };
@@ -46,19 +46,19 @@ const Task3 = () => {
   };
 
   const padBinaryInput = (length) =>
-    setBinaryInput(binaryInput.padEnd(length, '0'));
+    setBinaryInput(inputBin.padEnd(length, '0'));
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
       <Box mb={3}>
-        <Markdown className={classes.task} source={task} />
+        <Markdown className={classes.markdown}>{task}</Markdown>
       </Box>
 
       <Box width={LEN * 10} maxWidth='100%' mb={3}>
-        <BinaryMask
-          className={classes.binaryInput}
+        <BinMask
+          className={classes.inputBin}
           length={LEN}
-          value={binaryInput}
+          value={inputBin}
           onAccept={setBinaryInput}
         />
       </Box>
@@ -82,7 +82,7 @@ const Task3 = () => {
           Погнале
         </Button>
       </Box>
-      <BinaryMask out='true' length={LEN} value={output} onAccept={setOutput} />
+      <BinMask out='true' length={LEN} value={output} onAccept={setOutput} />
     </Box>
   );
 };
@@ -90,10 +90,10 @@ const Task3 = () => {
 export default Task3;
 
 const useStyles = makeStyles((theme) => ({
-  task: {
+  markdown: {
     ...theme.typography.body1,
   },
-  binaryInput: {
+  inputBin: {
     caretColor: 'gray',
   },
 }));

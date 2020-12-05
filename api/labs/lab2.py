@@ -16,8 +16,13 @@ def Task2(data):
   if i < 1 or i >= size:
     return { 'Error': "'k' is out of range"}
 
-  outer = tools.outer_bits(binary, size, i)
   inner = tools.inner_bits(binary, size, i)
+
+  if inner is None:
+    return { 'Error': 'No inner bits'}
+    
+  outer = tools.outer_bits(binary, size, i)
+
   outerString = tools.bin_to_str(outer, i*2)
   innerString = tools.bin_to_str(inner, size - (i * 2))
 

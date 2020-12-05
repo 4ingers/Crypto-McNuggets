@@ -1,11 +1,11 @@
 from . import tools
 
-def Task5(data):
+def Task6(data):
   try:
-    binary, _ = tools.str_to_bin(data['binary'])
+    binary, size = tools.str_to_bin(data['binary'])
   except ValueError:
     return { 'Error': "'binary' is not a number"}
 
-  result = tools.next_power_of_2(binary)
+  result = tools.xor_compression(binary, size)
 
   return { 'result': result }

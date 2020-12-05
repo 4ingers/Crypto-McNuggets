@@ -1,21 +1,21 @@
-def str_to_bin(str, reversed=True):
+def str_to_bin(str, reverse=True):
   nospaces = str.replace(' ', '')
-  directed = nospaces[::-1] if reversed else nospaces
+  size = len(nospaces)
+  directed = nospaces[::-1] if reverse else nospaces
   try:
     num = int(directed, 2)
   except ValueError as e:
     raise e
-  size = len(nospaces)
   return num, size
 
-def bin_to_str(num, size, reversed=True):
+def bin_to_str(num, size, reverse=True):
   formalized = bin(num)
   trimmed = formalized[2:]
-  if reversed:
+  if reverse:
     directed = trimmed[::-1]
-    padded = directed.ljust(size, '0')
+    padded = directed#.ljust(size, '0')
   else:
-    padded = trimmed.rjust(size, '0')
+    padded = trimmed#.rjust(size, '0')
   return padded
 
 
@@ -44,6 +44,10 @@ def outer_bits(num, size, i):
   
 def inner_bits(num, size, i):
   length = size - i*2
+
+  if length < 0:
+    return None
+    
   mask = ((1 << length) - 1) << i
   return (num & mask) >> i
 
@@ -61,14 +65,26 @@ def highest_power_of_2(num):
   return (num & (~(num - 1)))
 
 
-def next_power_of_2(n): 
+def next_power_of_2(num): 
+  if num == 0:
+    return None
+  
   count = 0
-
-  if (n and not(n & (n - 1))): 
-    return count
-
-  while(n != 0): 
-    n >>= 1
-    count += 1
     
-  return count
+  while num != 0: 
+    num >>= 1
+    count += 1
+
+  return count - 1
+
+
+def xor_compression(num, size):
+  xor = num & 1
+  print('before', bin(num))
+  
+  for _ in range(1, size):
+    num >>= 1
+    xor ^= num & 1
+    print(_, 'loop', xor, bin(num))
+    
+  return xor
