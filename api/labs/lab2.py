@@ -1,4 +1,4 @@
-from .tools import *
+from . import tools
 
 def Task2(data):
   try:
@@ -9,17 +9,17 @@ def Task2(data):
     return { 'Error': "'i' is not a number"}
 
   try:
-    binary, size = str_to_bin(data['binary'])
+    binary, size = tools.str_to_bin(data['binary'])
   except ValueError:
     return { 'Error': "'binary' is not a number"}
 
   if i < 1 or i >= size:
     return { 'Error': "'k' is out of range"}
 
-  outer = outer_bits(binary, size, i)
-  inner = inner_bits(binary, size, i)
-  outerString = bin_to_str(outer, i*2)
-  innerString = bin_to_str(inner, size - (i * 2))
+  outer = tools.outer_bits(binary, size, i)
+  inner = tools.inner_bits(binary, size, i)
+  outerString = tools.bin_to_str(outer, i*2)
+  innerString = tools.bin_to_str(inner, size - (i * 2))
 
   return { 
     'result': {

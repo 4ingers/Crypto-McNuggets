@@ -1,4 +1,4 @@
-from .tools import *
+from . import tools
 
 def Task3(data):
   try:
@@ -10,14 +10,14 @@ def Task3(data):
     return { 'Error': "'i' or 'j' is not a number"}
   
   try:
-    binary, size = str_to_bin(data['binary'])
+    binary, size = tools.str_to_bin(data['binary'])
   except ValueError:
     return { 'Error': "'binary' is not a number"}
 
   if i < 1 or i > 4 or j < 1 or j > 4:
     return { 'Error': "'i' or 'j' is out of range"}
 
-  swapped = swap_bytes_32(binary, i - 1, j - 1)
-  result = bin_to_str(swapped, size)
+  swapped = tools.swap_bytes(binary, i - 1, j - 1)
+  result = tools.bin_to_str(swapped, size)
 
   return { 'result': result }

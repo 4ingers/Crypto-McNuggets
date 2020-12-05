@@ -48,7 +48,7 @@ def inner_bits(num, size, i):
   return (num & mask) >> i
 
 
-def swap_bytes_32(num, i, j):
+def swap_bytes(num, i, j):
   byte = (1 << 8) - 1
   ith = (num >> i*8) & byte
   jth = (num >> j*8) & byte
@@ -59,3 +59,16 @@ def swap_bytes_32(num, i, j):
 
 def highest_power_of_2(num):
   return (num & (~(num - 1)))
+
+
+def next_power_of_2(n): 
+  count = 0
+
+  if (n and not(n & (n - 1))): 
+    return count
+
+  while(n != 0): 
+    n >>= 1
+    count += 1
+    
+  return count
