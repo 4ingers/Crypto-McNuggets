@@ -5,9 +5,10 @@ import axios from 'axios';
 
 import Markdown from '../../Markdown';
 import { IntMask, BinMask, TextMask } from '../../masks/';
-import { Strings} from '../../../misc/'
+import { Strings } from '../../../misc/';
 
 const BIN_SIZE = 8;
+
 const task = `
 # Задание 8
     
@@ -43,7 +44,7 @@ $$
 
     const data = {
       binary: inputBin,
-      permutation: inputPermutation
+      permutation: inputPermutation,
     };
 
     axios
@@ -73,9 +74,9 @@ $$
         <Box mr={1} width={40}>
           <IntMask
             className={classes.input}
-            placeholder={BIN_SIZE.toString()}
+            placeholder={BIN_SIZE}
             min={1}
-            max={32}
+            max={BIN_SIZE}
             value={inputBinSize}
             onAccept={setInputBinSize}
           />
@@ -103,16 +104,14 @@ $$
             unmask={true}
             value={inputPermutation}
             onAccept={setInputPermutation}
-            mask={`(${Array(binSize).fill('D').join('{,}` ')})`}
-            // lazy={false} // make placeholder always visible
-            // definitions={{ '1': /[1-9]/ }}
+            mask={`${Array(binSize).fill('D').join('{,}` ')}`}
             blocks={{
-              'D': {
+              D: {
                 mask: Number,
                 scale: 0,
                 min: 0,
                 max: binSize - 1,
-              }
+              },
             }}
           />
         </Box>

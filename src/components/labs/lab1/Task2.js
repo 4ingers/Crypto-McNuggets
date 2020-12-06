@@ -7,6 +7,7 @@ import axios from 'axios';
 import { IntMask, BinMask } from '../../masks/';
 
 const BIN_SIZE = 32;
+
 const task = `
 # Задание 2
     
@@ -31,19 +32,12 @@ const Task2 = () => {
   const [inputBin, setInputBin] = useState('');
 
   const [binSize, setBinSize] = useState(BIN_SIZE);
-  const [inputBinSize, setInputBinSize] = useState(BIN_SIZE.toString());
+  const [inputBinSize, setInputBinSize] = useState(BIN_SIZE);
 
   const [inputI, setInputI] = useState('');
 
   const [outputInner, setOutputInner] = useState('');
   const [outputOuter, setOutputOuter] = useState('');
-
-  const convertLength = () => {
-    const converted = Number(inputBinSize);
-    if (isNaN(converted) || converted < 1 || converted > 64) 
-      setInputBinSize('');
-    setBinSize(converted);
-  };
 
   const onTaskCalled = () => {
     padInputBin(binSize);
@@ -86,17 +80,17 @@ const Task2 = () => {
             className={classes.input}
             placeholder={BIN_SIZE}
             min={1}
-            max={64}
+            max={BIN_SIZE}
             value={inputBinSize}
             onAccept={setInputBinSize}
           />
         </Box>
-        <Button variant='contained' onClick={convertLength}>
+        <Button variant='contained' onClick={() => setBinSize(inputBinSize)}>
           Применить
         </Button>
       </Box>
 
-      <Box width={binSize * 10} maxWidth='100%' mb={3}>
+      <Box width={1 + binSize * 10} maxWidth='100%' mb={3}>
         <BinMask
           className={classes.inputBin}
           length={binSize}

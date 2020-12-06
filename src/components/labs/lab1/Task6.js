@@ -24,7 +24,7 @@ const Task5 = () => {
   const [inputBin, setInputBin] = useState('');
 
   const [binSize, setBinSize] = useState(BIN_SIZE);
-  const [inputBinSize, setInputBinSize] = useState(BIN_SIZE.toString());
+  const [inputBinSize, setInputBinSize] = useState(BIN_SIZE);
 
   const [output, setOutput] = useState('Тут будет ответ...');
 
@@ -34,13 +34,6 @@ $$
 ${Strings.reverse(inputBin)} \\to ${value}
 $$
   `);
-
-  const convertLength = () => {
-    const converted = Number(inputBinSize);
-    if (isNaN(converted) || converted < 1 || converted > 64)
-      setInputBinSize('');
-    setBinSize(converted);
-  };
 
   const onTaskCalled = () => {
     padInputBin(binSize);
@@ -76,12 +69,12 @@ $$
             className={classes.input}
             placeholder={BIN_SIZE}
             min={1}
-            max={64}
+            max={BIN_SIZE}
             value={inputBinSize}
             onAccept={setInputBinSize}
           />
         </Box>
-        <Button variant='contained' onClick={convertLength}>
+        <Button variant='contained' onClick={() => setBinSize(inputBinSize)}>
           Применить
         </Button>
       </Box>

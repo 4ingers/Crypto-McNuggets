@@ -1,8 +1,9 @@
-def set_kth_bit(n, k): 
-  return (1 << k) ^ n
-
+# 1
 def get_kth_bit(n, k):
   return ((1 << k) & n) >> k
+
+def set_kth_bit(n, k): 
+  return (1 << k) ^ n
 
 def swap_bits(num, i, j):
   ith = (num >> i) & 1
@@ -15,6 +16,7 @@ def nullify_child_bits(num, n):
   return (num >> n) << n
 
 
+# 2
 def outer_bits(num, size, i):
   rMask = (1 << i) - 1
   rVal = num & rMask
@@ -31,6 +33,7 @@ def inner_bits(num, size, i):
   return (num & mask) >> i
 
 
+# 3
 def swap_bytes(num, i, j):
   byte = (1 << 8) - 1
   ith = (num >> i*8) & byte
@@ -40,6 +43,7 @@ def swap_bytes(num, i, j):
   return num ^ xor
 
 
+# 4
 def highest_power_of_2(num):
   if num < 1:
     return None
@@ -53,6 +57,7 @@ def highest_power_of_2(num):
   return count - 1
 
 
+# 5
 def next_power_of_2(num): 
   if num < 1:
     return None
@@ -66,6 +71,7 @@ def next_power_of_2(num):
   return count - 1
 
 
+# 6
 def xor_compression(num, size):
   xor = num & 1
   print('before', bin(num))
@@ -78,6 +84,7 @@ def xor_compression(num, size):
   return xor
 
 
+# 7
 def rotate_right(num, count, size):
   rmask = (1 << count) - 1
   rhalf = num & rmask
@@ -87,11 +94,12 @@ def rotate_left(num, count, size):
   return rotate_right(num, size - count, size)
 
 
+# 8
 def permute(num, seq):
   permutation = 0
 
   for i in seq:
     permutation <<= 1
     permutation |= (num >> i) & 1
-    
+
   return permutation
