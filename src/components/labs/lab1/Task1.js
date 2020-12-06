@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
-import Markdown from '../../MarkdownMath';
-import cn from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, TextField, Button, Typography } from '@material-ui/core';
+import { Box, Button, Typography } from '@material-ui/core';
 import axios from 'axios';
 
-import BinMask from '../../masks/BinMask';
+import Markdown from '../../Markdown';
+import { BinMask, IntMask } from '../../masks/';
+import { Objects } from '../../../misc/';
+
+const SIZE = 32;
 
 const task = `
 # Задание 1
     
-С клавиатуры вводится $32$-х разрядное целое число $a$ в двоичной системе счисления.
+С клавиатуры вводится $32$-х разрядное целое число $a$ в двоичной системе 
+счисления.
    
-1. Вывести $k$−ый бит числа $a$. Номер бита предварительно запросить у пользователя. 
+1. Вывести $k$−ый бит числа $a$. Номер бита предварительно запросить у 
+пользователя. 
 2. Установить/снять $k$−ый бит числа $a$.
-3. Поменять местами $i$−ый и $j$−ый биты в числе $a$. Числа $i$ и $j$ предварительно запросить у пользователя.
+3. Поменять местами $i$−ый и $j$−ый биты в числе $a$. Числа $i$ и $j$ 
+предварительно запросить у пользователя.
 4. Обнулить младшие $m$ бит.
 `;
 
@@ -40,176 +45,177 @@ const Task1 = () => {
   const onSubtask4Called = () => onSubtaskCalled('1.4', setOutput4);
 
   const onSubtaskCalled = (id, outputSetter) => {
-    padBinaryInput();
-
-    const getDataParams = () => {
-      switch (id) {
-        case '1.1':
-          return { k: param1 };
-        case '1.2':
-          return { k: param2 };
-        case '1.3':
-          return { i: param3i, j: param3j };
-        case '1.4':
-          return { m: param4 };
-        default:
-          return { shitted: 'pants' };
-      }
-    };
+    padInputBin(SIZE);
 
     const data = {
-      binary: binary,
-      ...getDataParams(),
+      binary,
+      ...{
+        1.1: { k: param1 },
+        1.2: { k: param2 },
+        1.3: { i: param3i, j: param3j },
+        1.4: { m: param4 },
+      }[id],
     };
+
+    if (Objects.containsFalseValue(data)) {
+      outputSetter('');
+      return false;
+    }
 
     axios
       .post('/labs/' + id, data)
-      .then((res) => {
-        const { result } = res.data;
-        console.log(res.data);
-        outputSetter(result || '');
-      })
+      .then((res) => outputSetter(res.data.result))
       .catch((err) => {
         console.error(err);
         outputSetter('');
       });
   };
 
-  const padBinaryInput = () => setBinaryInput(binary.padEnd(32, '0'));
+  const padInputBin = () => setBinaryInput(binary.padEnd(32, '0'));
 
   return (
     <Box display='flex' flexDirection='column'>
-      <Markdown className={classes.markdown}>{task}</Markdown>
+      <Box mb={4}>
+        <Markdown className={classes.markdown}>{task}</Markdown>
+      </Box>
 
       <Box display='flex' flexDirection='column' pb={6}>
-        <BinMask
-          className={cn(classes.binary32, classes.inputBin)}
-          length={32}
-          value={binary}
-          onAccept={setBinaryInput}
-        />
-
-        <Box display='flex' className={classes.implementation}>
-          <Typography variant='h5'>1.</Typography>
-          <TextField
-            className={cn(classes.chooseBit, classes.flexItem)}
-            placeholder='k-й бит'
-            value={param1}
-            onChange={(e) => setParam1(e.target.value)}
-            variant='filled'
-          />
-          <Button
-            variant='contained'
-            color='primary'
-            className={classes.flexItem}
-            onClick={onSubtask1Called}
-          >
-            {'-->'}
-          </Button>
+        <Box width={350} alignSelf='center' mb={4}>
           <BinMask
-            out="true"
-            className={cn(
-              classes.binary1,
-              classes.binaryOutput,
-              classes.flexItem
-            )}
+            className={classes.input}
+            length={32}
+            value={binary}
+            onAccept={setBinaryInput}
+          />
+        </Box>
+
+        <Box display='flex' mb={4} alignItems='center'>
+          <Box mr={1}>
+            <Typography variant='h6'>1.</Typography>
+          </Box>
+
+          <Box width={80} mr={1}>
+            <IntMask
+              className={classes.input}
+              placeholder='k-й бит'
+              min={0}
+              max={31}
+              value={param1}
+              onAccept={setParam1}
+            />
+          </Box>
+
+          <Box mr={1}>
+            <Button variant='contained' onClick={onSubtask1Called}>
+              Эти
+            </Button>
+          </Box>
+
+          <BinMask
+            out='true'
+            className={classes.input}
             length={1}
             value={output1}
             onAccept={setOutput1}
           />
         </Box>
 
-        <Box display='flex' className={classes.implementation}>
-          <Typography variant='h5'>2.</Typography>
-          <TextField
-            className={cn(classes.chooseBit, classes.flexItem)}
-            placeholder='k-й бит'
-            value={param2}
-            onChange={(e) => setParam2(e.target.value)}
-            variant='filled'
-          />
-          <Button
-            variant='contained'
-            color='primary'
-            className={classes.flexItem}
-            onClick={onSubtask2Called}
-          >
-            {'-->'}
-          </Button>
+        <Box display='flex' mb={4} alignItems='center'>
+          <Box mr={1}>
+            <Typography variant='h6'>2.</Typography>
+          </Box>
+
+          <Box width={80} mr={1}>
+            <IntMask
+              className={classes.input}
+              placeholder='k-й бит'
+              min={0}
+              max={31}
+              value={param2}
+              onAccept={setParam2}
+            />
+          </Box>
+
+          <Box mr={1}>
+            <Button variant='contained' onClick={onSubtask2Called}>
+              Египтяне
+            </Button>
+          </Box>
+
           <BinMask
-            out="true"
-            className={cn(
-              classes.binary32,
-              classes.binaryOutput,
-              classes.flexItem
-            )}
+            out='true'
             length={32}
             value={output2}
             onAccept={setOutput2}
           />
         </Box>
 
-        <Box display='flex' className={classes.implementation}>
-          <Typography variant='h5'>3.</Typography>
-          <TextField
-            className={cn(classes.chooseBit, classes.flexItem)}
-            placeholder='i-й бит'
-            value={param3i}
-            onChange={(e) => setParam3i(e.target.value)}
-            variant='filled'
-          />
-          <TextField
-            className={cn(classes.chooseBit, classes.flexItem)}
-            placeholder='j-й бит'
-            value={param3j}
-            onChange={(e) => setParam3j(e.target.value)}
-            variant='filled'
-          />
-          <Button
-            variant='contained'
-            color='primary'
-            className={classes.flexItem}
-            onClick={onSubtask3Called}
-          >
-            {'-->'}
-          </Button>
+        <Box display='flex' mb={4} alignItems='center'>
+          <Box mr={1}>
+            <Typography variant='h6'>3.</Typography>
+          </Box>
+
+          <Box width={80} mr={1}>
+            <IntMask
+              className={classes.input}
+              placeholder='i-й бит'
+              min={0}
+              max={31}
+              value={param3i}
+              onAccept={setParam3i}
+            />
+          </Box>
+
+          <Box width={80} mr={1}>
+            <IntMask
+              className={classes.input}
+              placeholder='j-й бит'
+              min={0}
+              max={31}
+              value={param3j}
+              onAccept={setParam3j}
+            />
+          </Box>
+
+          <Box mr={1}>
+            <Button variant='contained' onClick={onSubtask3Called}>
+              Просто
+            </Button>
+          </Box>
+
           <BinMask
-            out="true"
-            className={cn(
-              classes.binary32,
-              classes.binaryOutput,
-              classes.flexItem
-            )}
+            out='true'
             length={32}
             value={output3}
             onAccept={setOutput3}
           />
         </Box>
 
-        <Box display='flex' className={classes.implementation}>
-          <Typography variant='h5'>4.</Typography>
-          <TextField
-            className={cn(classes.chooseBit, classes.flexItem)}
-            placeholder='m бит'
-            value={param4}
-            onChange={(e) => setParam4(e.target.value)}
-            variant='filled'
-          />
-          <Button
-            variant='contained'
-            color='primary'
-            className={classes.flexItem}
-            onClick={onSubtask4Called}
-          >
-            {'-->'}
-          </Button>
+        <Box display='flex' mb={4} alignItems='center'>
+          <Box mr={1}>
+            <Typography variant='h6'>4.</Typography>
+          </Box>
+
+          <Box width={80} mr={1}>
+            <IntMask
+              className={classes.input}
+              placeholder='m бит'
+              min={0}
+              max={32}
+              value={param4}
+              onAccept={setParam4}
+            />
+          </Box>
+
+          <Box mr={1}>
+            <Button variant='contained' onClick={onSubtask4Called}>
+              Чокнутые
+            </Button>
+          </Box>
+
           <BinMask
-            out="true"
-            className={cn(
-              classes.binary32,
-              classes.binaryOutput,
-              classes.flexItem
-            )}
+            out='true'
+            className={classes.input}
             length={32}
             value={output4}
             onAccept={setOutput4}
@@ -226,30 +232,7 @@ const useStyles = makeStyles((theme) => ({
   markdown: {
     ...theme.typography.body1,
   },
-  flexItem: {
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-  },
-  binary32: {
-    width: '350px',
-  },
-  binary1: {
-    width: '110px',
-  },
-  inputBin: {
-    alignSelf: 'center',
+  input: {
     caretColor: 'gray',
-    marginBottom: theme.spacing(3),
-    minWidth: '280px',
-  },
-  binaryOutput: {
-    minWidth: '110px',
-  },
-  chooseBit: {
-    width: '80px',
-  },
-  implementation: {
-    marginBottom: theme.spacing(3),
-    alignItems: 'center',
   },
 }));

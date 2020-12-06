@@ -3,22 +3,22 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button, Typography } from '@material-ui/core';
 import axios from 'axios';
 
-import Markdown from '../../MarkdownMath';
+import Markdown from '../../Markdown';
 import { BinMask, IntMask } from '../../masks/';
+import { Strings } from '../../../misc/'
 
-
-const BIN_SIZE = 32
+const BIN_SIZE = 32;
 
 const task = `
 # Задание 6
 
-Дано $2^p$ разрядное целое число. "Поксорить" все биты этого числа друг с другом. 
+Дано $2^p$ разрядное целое число. "Поксорить" все биты этого числа друг с 
+другом. 
 
 *Пример.* $101110001 \\to 1; 11100111 \\to 0$.
 `;
 
 const Task5 = () => {
-  const LEN = 32;
   const classes = useStyles();
 
   const [inputBin, setInputBin] = useState('');
@@ -28,38 +28,38 @@ const Task5 = () => {
 
   const [output, setOutput] = useState('Тут будет ответ...');
 
-  const setResult = (value) => setOutput(`
+  const setResult = (value) =>
+    setOutput(`
 $$
-${inputBin.slice(0, binSize).split('').reverse().join('')} \\to ${value}
+${Strings.reverse(inputBin)} \\to ${value}
 $$
   `);
 
   const convertLength = () => {
     const converted = Number(inputBinSize);
-    if (isNaN(converted) || converted < 1 || converted > 64) 
+    if (isNaN(converted) || converted < 1 || converted > 64)
       setInputBinSize('');
     setBinSize(converted);
   };
 
   const onTaskCalled = () => {
-    padBinaryInput(LEN);
-
+    padInputBin(binSize);
     const data = { binary: inputBin };
 
     axios
       .post('/labs/6', data)
       .then((res) => {
         const { result } = res.data;
+        console.log(result);
         setResult(result);
       })
       .catch((err) => {
         console.error(err);
-        setOutput('Обосрамс..')
+        setOutput('Обосрамс..');
       });
   };
 
-  const padBinaryInput = (length) =>
-    setInputBin(inputBin.padEnd(length, '0'));
+  const padInputBin = (length) => setInputBin(inputBin.padEnd(length, '0'));
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>

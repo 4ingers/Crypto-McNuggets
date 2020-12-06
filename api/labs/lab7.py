@@ -1,6 +1,6 @@
 from .tools import binaries, conversions
 
-def Task2(data):
+def Task7(data):
   try:
     i = int(data['i'])
   except KeyError:
@@ -16,19 +16,15 @@ def Task2(data):
   if i < 1 or i >= size:
     return { 'Error': "'i' is out of range"}
 
-  inner = binaries.inner_bits(binary, size, i)
+  shift_right = binaries.rotate_right(binary, i, size)
+  shift_left = binaries.rotate_left(binary, i, size)
 
-  if inner is None:
-    return { 'Error': 'No inner bits'}
-    
-  outer = binaries.outer_bits(binary, size, i)
-
-  outerString = conversions.bin_to_str(outer, i*2)
-  innerString = conversions.bin_to_str(inner, size - (i * 2))
+  result_right = conversions.bin_to_str(shift_right, size)
+  result_left = conversions.bin_to_str(shift_left, size)
 
   return { 
     'result': {
-      'inner': innerString,
-      'outer': outerString,
-    } 
+      'right': result_right,
+      'left': result_left
+    }
   }

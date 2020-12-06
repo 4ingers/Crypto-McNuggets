@@ -1,31 +1,21 @@
 import React, { useState } from 'react';
-import Markdown from '../../Markdown';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button, Typography } from '@material-ui/core';
 import axios from 'axios';
 
+import Markdown from '../../Markdown';
 import { IntMask, BinMask } from '../../masks/';
+import { Strings } from '../../../misc/';
 
 const BIN_SIZE = 32;
 const task = `
-# Задание 2
+# Задание 7
     
-1. "Склеить" первые $i$ битов с последними $i$ битами из целого числа длиной 
-$len$ битов. 
-  
-   *Пример.* Пусть есть $12$-ти разрядное целое число, представленное в двоичной
-    системе счисления \`100011101101\`. "Склеим" первые $3$ и последние $3$ 
-    бита, получим \`100101\`.
-
-2. Получить биты из целого числа длиной $len$ битов, находящиеся между первыми 
-$i$ битами и последними $i$ битами. 
-
-   *Пример.* Пусть есть $12$-ти разрядное целое число, представленное в двоичной
-    системе счисления – \`100011101101\`. Получим биты находящиеся между первыми
-     $3$ и последними $3$ битами: \`011101\`.
+Написать макросы циклического сдвига в $2^p$ разрядном целом числе на $n$ бит 
+влево и вправо.
 `;
 
-const Task2 = () => {
+const Task7 = () => {
   const classes = useStyles();
 
   const [inputBin, setInputBin] = useState('');
@@ -35,8 +25,17 @@ const Task2 = () => {
 
   const [inputI, setInputI] = useState('');
 
-  const [outputInner, setOutputInner] = useState('');
-  const [outputOuter, setOutputOuter] = useState('');
+  const [output, setOutput] = useState('');
+
+  const setResult = (result) =>
+    setOutput(`
+$$
+${Strings.reverse(inputBin)} \\ggg ${inputI} = ${Strings.reverse(result.right)}
+$$
+$$
+${Strings.reverse(inputBin)} \\lll ${inputI} = ${Strings.reverse(result.left)}
+$$
+  `);
 
   const convertLength = () => {
     const converted = Number(inputBinSize);
@@ -55,16 +54,14 @@ const Task2 = () => {
     };
 
     axios
-      .post('/labs/2', data)
+      .post('/labs/7', data)
       .then((res) => {
         const { result } = res.data;
-        setOutputInner(result.inner || '');
-        setOutputOuter(result.outer || '');
+        setResult(result);
       })
       .catch((err) => {
         console.error(err);
-        setOutputInner('');
-        setOutputOuter('');
+        setOutput('Эти египтяне просто чокнутые');
       });
   };
 
@@ -84,7 +81,7 @@ const Task2 = () => {
         <Box mr={1} width={40}>
           <IntMask
             className={classes.input}
-            placeholder={BIN_SIZE}
+            placeholder={BIN_SIZE.toString()}
             min={1}
             max={64}
             value={inputBinSize}
@@ -120,23 +117,12 @@ const Task2 = () => {
           Погнале
         </Button>
       </Box>
-      <BinMask
-        out='true'
-        length={outputOuter.length + 1}
-        value={outputOuter}
-        onAccept={setOutputOuter}
-      />
-      <BinMask
-        out='true'
-        length={outputInner.length + 1}
-        value={outputInner}
-        onAccept={setOutputInner}
-      />
+      <Markdown className={classes.markdown}>{output}</Markdown>
     </Box>
   );
 };
 
-export default Task2;
+export default Task7;
 
 const useStyles = makeStyles((theme) => ({
   markdown: {

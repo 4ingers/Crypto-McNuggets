@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import Markdown from '../../MarkdownMath';
+import Markdown from '../../Markdown';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button } from '@material-ui/core';
 import axios from 'axios';
 
-import BinMask from '../../masks/BinMask';
+import { BinMask, IntMask } from '../../masks/';
+import { Conversion } from '../../../misc/';
 
 const task = `
 # Задание 4
@@ -19,12 +20,44 @@ const Task4 = () => {
 
   const classes = useStyles();
 
-  const [inputBin, setBinaryInput] = useState('');
+  const [inputBin, setInputBin] = useState('');
+  const [inputInt, setInputInt] = useState('');
 
-  const [output, setOutput] = useState('');
+  const [output, setOutput] = useState('Тут будет ответ...');
+
+  const binChanged = (bin) => {
+    const int = Conversion.binToInt(bin);
+    setInputBin(bin);
+    setInputInt(int);
+  };
+
+  const intChanged = (int) => {
+    const bin = Conversion.intToBin(int);
+    setInputInt(int);
+    setInputBin(bin);
+  };
+
+  const setResult = (power) => {
+    const parsed = parseInt(power, 10);
+    const powered = 2 ** parsed
+    const int = parseInt(inputInt, 10)
+    console.log(power);
+    if (!isNaN(parsed)) {
+      setOutput(`
+$$
+p=${power}
+$$
+$$
+2^{${power}} \\vert ${inputInt} \\iff ${inputInt} : ${powered} = ${int / powered}
+$$
+      `);
+    } else {
+      setOutput('Обосрамс..');
+    }
+  };
 
   const onTaskCalled = () => {
-    padBinaryInput(LEN);
+    padInputBin(LEN);
 
     const data = {
       binary: inputBin,
@@ -34,16 +67,15 @@ const Task4 = () => {
       .post('/labs/4', data)
       .then((res) => {
         const { result } = res.data;
-        setOutput(result || '');
+        setResult(result);
       })
       .catch((err) => {
         console.error(err);
-        setOutput('');
+        setResult('');
       });
   };
 
-  const padBinaryInput = (length) =>
-    setBinaryInput(inputBin.padEnd(length, '0'));
+  const padInputBin = (length) => setInputBin(inputBin.padEnd(length, '0'));
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
@@ -51,21 +83,28 @@ const Task4 = () => {
         <Markdown className={classes.markdown}>{task}</Markdown>
       </Box>
 
-      <Box width={LEN * 10} maxWidth='100%' mb={3}>
+      <Box width={1 + LEN * 10} maxWidth='100%' mb={3}>
         <BinMask
-          className={classes.inputBin}
+          className={classes.input}
           length={LEN}
           value={inputBin}
-          onAccept={setBinaryInput}
+          onAccept={binChanged}
         />
       </Box>
+
+      <IntMask
+        className={classes.input}
+        value={inputInt}
+        onAccept={intChanged}
+      />
 
       <Box mb={3} display='flex'>
         <Button variant='contained' onClick={onTaskCalled}>
           Погнале
         </Button>
       </Box>
-      <BinMask out='true' length={LEN} value={output} onAccept={setOutput} />
+
+      <Markdown className={classes.markdown}>{output}</Markdown>
     </Box>
   );
 };

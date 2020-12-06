@@ -15,6 +15,7 @@ tasks = {
   '4': Task4,
   '5': Task5,
   '6': Task6,
+  '7': Task7,
 }
 
 @app.route('/') # Not working :(

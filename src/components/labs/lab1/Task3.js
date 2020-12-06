@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Markdown from '../../MarkdownMath';
+import Markdown from '../../Markdown';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, TextField, Button } from '@material-ui/core';
 import axios from 'axios';
@@ -9,7 +9,8 @@ import BinMask from '../../masks/BinMask';
 const task = `
 # Задание 3
     
-Поменять местами байты в заданном $32$-х разрядном целом числе. Перестановка задается пользователем.
+Поменять местами байты в заданном $32$-х разрядном целом числе. Перестановка 
+задается пользователем.
 `;
 
 const Task3 = () => {
@@ -25,7 +26,7 @@ const Task3 = () => {
   const [output, setOutput] = useState('');
 
   const onTaskCalled = () => {
-    padBinaryInput(LEN);
+    padInputBin(LEN);
 
     const data = {
       binary: inputBin,
@@ -45,7 +46,7 @@ const Task3 = () => {
       });
   };
 
-  const padBinaryInput = (length) =>
+  const padInputBin = (length) =>
     setBinaryInput(inputBin.padEnd(length, '0'));
 
   return (

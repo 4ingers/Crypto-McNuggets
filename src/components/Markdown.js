@@ -1,42 +1,16 @@
 import React from 'react';
-import ReactMarkdown from 'markdown-to-jsx';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import ReactMarkdown from 'react-markdown';
+import { InlineMath, BlockMath } from 'react-katex';
+import math from 'remark-math';
+import 'katex/dist/katex.min.css';
 
-const styles = (theme) => ({
-  listItem: {
-    marginTop: theme.spacing(1),
-  },
-});
-
-const options = {
-  overrides: {
-    h1: {
-      component: Typography,
-      props: {
-        gutterBottom: true,
-        variant: 'h5',
-      },
-    },
-    h2: { component: Typography, props: { gutterBottom: true, variant: 'h6' } },
-    h3: { component: Typography, props: { gutterBottom: true, variant: 'subtitle1' } },
-    h4: {
-      component: Typography,
-      props: { gutterBottom: true, variant: 'caption', paragraph: true },
-    },
-    p: { component: Typography, props: { paragraph: true } },
-    a: { component: Link },
-    li: {
-      component: withStyles(styles)(({ classes, ...props }) => (
-        <li className={classes.listItem}>
-          <Typography component="span" {...props} />
-        </li>
-      )),
-    },
-  },
+const renderers = {
+  inlineMath: ({ value }) => <InlineMath math={value} />,
+  math: ({ value }) => <BlockMath math={value} />,
 };
 
-export default function Markdown(props) {
-  return <ReactMarkdown options={options} {...props} />;
-}
+const MarkdownKatex = (props) => (
+  <ReactMarkdown {...props} plugins={[math]} renderers={renderers}/>
+);
+
+export default MarkdownKatex;

@@ -3,14 +3,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button } from '@material-ui/core';
 import axios from 'axios';
 
-import Markdown from '../../MarkdownMath';
+import Markdown from '../../Markdown';
 import { BinMask, IntMask } from '../../masks/';
 import { Conversion } from '../../../misc/';
 
 const task = `
 # Задание 5
 
-Пусть $x$ – целое число. Найти такое $p$, что $2^p \\leqslant x \\leqslant 2^{p+1}$ .
+Пусть $x$ – целое число. Найти такое $p$, что $2^p \\leqslant x \\leqslant 
+2^{p+1}$ .
 `;
 
 const Task5 = () => {
@@ -54,7 +55,7 @@ $$
   };
 
   const onTaskCalled = () => {
-    padBinaryInput(LEN);
+    padInputBin(LEN);
 
     const data = { binary: inputBin };
 
@@ -70,7 +71,7 @@ $$
       });
   };
 
-  const padBinaryInput = (length) =>
+  const padInputBin = (length) =>
     setInputBin(inputBin.padEnd(length, '0'));
 
   return (

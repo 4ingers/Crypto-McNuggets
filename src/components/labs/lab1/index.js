@@ -4,6 +4,8 @@ import Task3 from './Task3';
 import Task4 from './Task4';
 import Task5 from './Task5';
 import Task6 from './Task6';
+import Task7 from './Task7';
+import Task8 from './Task8';
 
 const Lab = [
   { component: Task1, label: '1' },
@@ -12,6 +14,8 @@ const Lab = [
   { component: Task4, label: '4' },
   { component: Task5, label: '5' },
   { component: Task6, label: '6' },
+  { component: Task7, label: '7' },
+  { component: Task8, label: '8' },
 ];
 
 export default Lab;

@@ -1,1 +1,2 @@
-from .bits import *
+from . import binaries
+from . import conversions

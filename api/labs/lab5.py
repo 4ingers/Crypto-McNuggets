@@ -1,11 +1,11 @@
-from . import tools
+from .tools import binaries, conversions
 
 def Task5(data):
   try:
-    binary, _ = tools.str_to_bin(data['binary'])
+    binary, _ = conversions.str_to_bin(data['binary'])
   except ValueError:
     return { 'Error': "'binary' is not a number"}
 
-  result = tools.next_power_of_2(binary)
+  result = binaries.next_power_of_2(binary)
 
   return { 'result': result }
