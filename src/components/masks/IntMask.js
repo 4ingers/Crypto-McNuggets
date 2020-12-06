@@ -10,6 +10,7 @@ const IntMask = (props) => {
   const defaultProps = {
     placeholder: (props.out && 'Результат') || 'Вводите цифры..',
     mask: Number,
+    unmask: 'typed',
     min: 0,
     max,
     scale: 0,

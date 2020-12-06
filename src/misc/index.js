@@ -1,5 +1,5 @@
-import Conversion from './conversion';
+import Conversions from './conversions';
 import Strings from './strings';
 import Objects from './objects';
 
-export { Conversion, Strings, Objects };
+export { Conversions, Strings, Objects };

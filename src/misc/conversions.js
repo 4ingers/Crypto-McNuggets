@@ -1,4 +1,4 @@
-const Conversion = {
+const Conversions = {
   binToInt: (bin, reverse = true) => {
     const nospaces = bin.replaceAll(' ', '');
     const prepared = reverse ? nospaces.split('').reverse().join('') : nospaces;
@@ -15,4 +15,4 @@ const Conversion = {
   },
 };
 
-export default Conversion;
+export default Conversions;

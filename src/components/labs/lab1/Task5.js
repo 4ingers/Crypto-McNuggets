@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import Markdown from '../../Markdown';
 import { BinMask, IntMask } from '../../masks/';
-import { Conversion } from '../../../misc/';
+import { Conversions } from '../../../misc/';
 
 const task = `
 # Задание 5
@@ -24,13 +24,13 @@ const Task5 = () => {
   const [output, setOutput] = useState('Тут будет ответ...');
 
   const binChanged = (bin) => {
-    const int = Conversion.binToInt(bin);
+    const int = Conversions.binToInt(bin);
     setInputBin(bin);
     setInputInt(int);
   };
 
   const intChanged = (int) => {
-    const bin = Conversion.intToBin(int);
+    const bin = Conversions.intToBin(int);
     setInputInt(int);
     setInputBin(bin);
   };

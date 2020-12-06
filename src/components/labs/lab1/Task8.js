@@ -4,10 +4,10 @@ import { Box, Button, Typography } from '@material-ui/core';
 import axios from 'axios';
 
 import Markdown from '../../Markdown';
-import { IntMask, BinMask } from '../../masks/';
-import { Strings } from '../../../misc/';
+import { IntMask, BinMask, TextMask } from '../../masks/';
+import { Strings} from '../../../misc/'
 
-const BIN_SIZE = 32;
+const BIN_SIZE = 8;
 const task = `
 # Задание 8
     
@@ -25,40 +25,29 @@ const Task8 = () => {
   const [inputBin, setInputBin] = useState('');
 
   const [binSize, setBinSize] = useState(BIN_SIZE);
-  const [inputBinSize, setInputBinSize] = useState(BIN_SIZE.toString());
+  const [inputBinSize, setInputBinSize] = useState(BIN_SIZE);
 
-  const [inputI, setInputI] = useState('');
+  const [inputPermutation, setInputPermutation] = useState('');
 
   const [output, setOutput] = useState('');
 
   const setResult = (result) =>
     setOutput(`
 $$
-${Strings.reverse(inputBin)} \\ggg ${inputI} = ${Strings.reverse(result.right)}
-$$
-$$
-${Strings.reverse(inputBin)} \\lll ${inputI} = ${Strings.reverse(result.left)}
+(${Strings.reverse(inputBin)}) \\to ${Strings.reverse(result)}
 $$
   `);
-
-  const convertLength = () => {
-    const converted = Number(inputBinSize);
-    if (isNaN(converted) || converted < 1 || converted > 64) 
-      setInputBinSize('');
-    setBinSize(converted);
-  };
 
   const onTaskCalled = () => {
     padInputBin(binSize);
 
     const data = {
       binary: inputBin,
-      len: inputBinSize,
-      i: inputI,
+      permutation: inputPermutation
     };
 
     axios
-      .post('/labs/7', data)
+      .post('/labs/8', data)
       .then((res) => {
         const { result } = res.data;
         setResult(result);
@@ -69,8 +58,7 @@ $$
       });
   };
 
-  const padInputBin = (length) =>
-    setInputBin(inputBin.padEnd(length, '0'));
+  const padInputBin = (length) => setInputBin(inputBin.padEnd(length, '0'));
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
@@ -87,12 +75,12 @@ $$
             className={classes.input}
             placeholder={BIN_SIZE.toString()}
             min={1}
-            max={64}
+            max={32}
             value={inputBinSize}
             onAccept={setInputBinSize}
           />
         </Box>
-        <Button variant='contained' onClick={convertLength}>
+        <Button variant='contained' onClick={() => setBinSize(inputBinSize)}>
           Применить
         </Button>
       </Box>
@@ -107,14 +95,25 @@ $$
       </Box>
 
       <Box mb={3} display='flex'>
-        <Box mr={2} width={30}>
-          <IntMask
+        <Box mr={2} width={5 + binSize * 30}>
+          <TextMask
             className={classes.input}
-            placeholder={'i'}
-            min={1}
-            max={64}
-            value={inputI}
-            onAccept={setInputI}
+            placeholder='Мешанина'
+            fullWidth={true}
+            unmask={true}
+            value={inputPermutation}
+            onAccept={setInputPermutation}
+            mask={`(${Array(binSize).fill('D').join('{,}` ')})`}
+            // lazy={false} // make placeholder always visible
+            // definitions={{ '1': /[1-9]/ }}
+            blocks={{
+              'D': {
+                mask: Number,
+                scale: 0,
+                min: 0,
+                max: binSize - 1,
+              }
+            }}
           />
         </Box>
         <Button variant='contained' onClick={onTaskCalled}>

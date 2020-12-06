@@ -85,3 +85,13 @@ def rotate_right(num, count, size):
 
 def rotate_left(num, count, size):
   return rotate_right(num, size - count, size)
+
+
+def permute(num, seq):
+  permutation = 0
+
+  for i in seq:
+    permutation <<= 1
+    permutation |= (num >> i) & 1
+    
+  return permutation
