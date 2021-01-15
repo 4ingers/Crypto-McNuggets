@@ -5,7 +5,7 @@
 /api/data/*
 
 # VSCode
-.vscode
+/.vscode/
 
 # dependencies
 /node_modules
