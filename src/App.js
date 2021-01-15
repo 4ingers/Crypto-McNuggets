@@ -7,7 +7,7 @@ import Box from '@material-ui/core/Box';
 
 import Lab from './components/labs/lab1';
 
-const CURRENT_INDEX = 7;
+const CURRENT_INDEX = 9;
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;

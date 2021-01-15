@@ -1,5 +1,5 @@
 const Objects = {
-  containsFalseValue: (obj) => !Object.values(obj).some(x => x)
-}
+  containsFalsy: (obj) => Object.values(obj).some((x) => !x),
+};
 
 export default Objects;

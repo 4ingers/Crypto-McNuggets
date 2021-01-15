@@ -57,7 +57,7 @@ const Task1 = () => {
       }[id],
     };
 
-    if (Objects.containsFalseValue(data)) {
+    if (Objects.containsFalsy(data)) {
       outputSetter('');
       return false;
     }

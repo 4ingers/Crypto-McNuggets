@@ -1,16 +1,18 @@
 # 1
-def get_kth_bit(n, k):
-  return ((1 << k) & n) >> k
+def get_kth_bit(num, k):
+  return (num >> k) & 1
 
-def set_kth_bit(n, k): 
-  return (1 << k) ^ n
+def set_kth_bit(num, k, bit):
+  return (num & ~(1 << k)) | (bit << k)
+
+def change_kth_bit(num, k): 
+  return (1 << k) ^ num
 
 def swap_bits(num, i, j):
   ith = (num >> i) & 1
   jth = (num >> j) & 1
   xor = ith ^ jth
-  xor = (xor << i) | (xor << j)
-  return num ^ xor
+  return num ^ ((xor << i) | (xor << j))
 
 def nullify_child_bits(num, n):
   return (num >> n) << n
